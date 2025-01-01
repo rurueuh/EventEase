@@ -2,16 +2,24 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import User from "@/model/Users";
 
 const Home: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserEmail(user.email);
+        const userRef = doc(db, "users", user.uid);
+        getDoc(userRef).then((docSnap) => {
+          if (docSnap.exists()) {
+            let user = docSnap.data() as User;
+            setUser(user);
+          }
+        });
       } else {
         router.push("/login");
       }
@@ -22,8 +30,8 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      {userEmail ? (
-        <h1>Welcome, {userEmail}!</h1>
+      {user ? (
+        <h1>Welcome, {user.username}!</h1>
       ) : (
         <p>Loading...</p>
       )}

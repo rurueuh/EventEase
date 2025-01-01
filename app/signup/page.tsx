@@ -1,38 +1,40 @@
 "use client";
-import { useState } from "react";
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "@/firebase";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, Input, Button, Spacer, ButtonGroup } from "@nextui-org/react";
-import Image from "next/image";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/firebase";
+import { Card, Input, Button, Spacer } from "@nextui-org/react";
 import Link from "next/link";
-
-// Icônes
-import { AiOutlineUserAdd } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
-
-// Import des toasts
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const Signup: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [username, setUsername] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   const router = useRouter();
 
-  const handleSignup = async (): Promise<void> => {
-    // On réinitialise le message d'erreur
-    setError("");
-    
-    // Vérification de la confirmation de mot de passe
-    if (password !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.");
-      toast.error("Les mots de passe ne correspondent pas.");
-      return;
-    }
+  const handleSignup = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (username) {
+        await updateProfile(user, {
+          displayName: username,
+        });
+      }
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: username,
+        age: age,
+        email: email,
+        createdAt: new Date(),
+      });
+
       toast.success("Compte créé avec succès !");
       router.push("/home");
     } catch (error: any) {
@@ -51,47 +53,40 @@ const Signup: React.FC = () => {
         "auth/wrong-password": "Mot de passe incorrect.",
         "auth/missing-password": "Mot de passe manquant.",
       } as Record<string, string>;
-      setError(messageTranslated[error.code] || error.message || "An error occurred during login.");
-      toast.error(messageTranslated[error.code] || error.message || "Une erreur est survenue lors de la création du compte.");
-    }
-  };
 
-  const handleGoogleSignup = async (): Promise<void> => {
-    // On réinitialise le message d'erreur
-    setError("");
-    const provider = new GoogleAuthProvider();
-
-    try {
-      await signInWithPopup(auth, provider);
-      toast.success("Compte créé via Google !");
-      router.push("/home");
-    } catch (error: any) {
-      setError(error.message || "Une erreur est survenue lors de l'inscription via Google.");
-      toast.error(error.message || "Une erreur est survenue lors de l'inscription via Google.");
+      const errorMsg =
+        messageTranslated[error.code] ||
+        error.message ||
+        "Une erreur est survenue lors de la création du compte.";
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
   return (
     <div className="flex justify-center items-center">
-
       <Card className="p-5 max-w-[400px] w-full">
-        <div>
-          <div className="w-[100px] mb-[10px] block mx-auto">
-            <Image
-              src="/logo.webp"
-              alt="Logo"
-              width={100}
-              height={100}
-            />
-          </div>
-          <Spacer y={1} />
-          <div>
-            <h3>Rejoindre EventEase</h3>
-          </div>
-          <Spacer y={5} />
-        </div>
+        <h3 className="text-center">Créer un compte</h3>
+        <Spacer y={4} />
 
-        {/* Champ email */}
+        <Input
+          fullWidth
+          size="lg"
+          placeholder="Nom d'utilisateur"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <Spacer y={1} />
+
+        <Input
+          fullWidth
+          size="lg"
+          placeholder="Âge"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
+        <Spacer y={1} />
+
         <Input
           fullWidth
           size="lg"
@@ -101,7 +96,6 @@ const Signup: React.FC = () => {
         />
         <Spacer y={1} />
 
-        {/* Champ mot de passe */}
         <Input
           fullWidth
           size="lg"
@@ -110,45 +104,21 @@ const Signup: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Spacer y={1} />
+        <Spacer y={2} />
 
-        {/* Champ confirmation mot de passe */}
-        <Input
-          fullWidth
-          size="lg"
-          placeholder="Confirmer le mot de passe"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <Spacer y={5} />
-
-        {/* Boutons d'action (Email/Password ou Google) */}
-        <ButtonGroup
-          className="p-[1px] rounded-md overflow-hidden bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-        >
-          <Button
-            className="w-full !bg-transparent !text-white !border-none hover:!bg-transparent"
-            color="primary"
-            variant="shadow"
-            onPress={handleSignup}
-          >
-            <AiOutlineUserAdd className="mr-2 w-6 h-6" />
-            S'inscrire
-          </Button>
-          <Button
-            className="w-full !bg-transparent !text-white !border-none hover:!bg-transparent"
-            color="secondary"
-            variant="shadow"
-            onPress={handleGoogleSignup}
-          >
-            <FcGoogle className="mr-2 w-6 h-6" />
-            Google
-          </Button>
-        </ButtonGroup>
-
-        <Spacer y={1} />
         {error && <p className="text-red-500 text-center">{error}</p>}
+        <Spacer y={1} />
+
+        <Button
+          className="w-full"
+          onPress={handleSignup}
+          variant="shadow"
+          color="primary"
+        >
+          S'inscrire
+        </Button>
+        <Spacer y={1} />
+        
         <p className="text-center">
           Vous avez déjà un compte ?{" "}
           <Link href="/login" className="text-blue-500">
