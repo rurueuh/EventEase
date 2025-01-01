@@ -1,19 +1,23 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + NextUI",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "EventEase",
+  description: "EventEase est une application de gestion d'événements",
   navItems: [
     {
-      label: "Clients",
+      label: "Accueil",
+      href: "/app/home",
+    },
+    {
+      label: "Profile",
       href: "/app/profile",
     },
     {
-      label: "Login",
+      label: "Connexion",
       href: "/login",
     },
     {
-      label: "Logout",
+      label: "Déconnexion",
       href: "/logout",
     },
   ],
