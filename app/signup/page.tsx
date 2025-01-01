@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "@/firebase";
 import { Card, Input, Button, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+
+import { auth, db } from "@/firebase";
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -19,7 +20,11 @@ const Signup: React.FC = () => {
 
   const handleSignup = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       const user = userCredential.user;
 
       if (username) {
@@ -47,7 +52,8 @@ const Signup: React.FC = () => {
         "auth/email-already-in-use": "Adresse email déjà utilisée.",
         "auth/weak-password": "Mot de passe trop faible.",
         "auth/invalid-credential": "Identifiants invalides.",
-        "auth/account-exists-with-different-credential": "Compte existant avec des identifiants différents.",
+        "auth/account-exists-with-different-credential":
+          "Compte existant avec des identifiants différents.",
         "auth/credential-already-in-use": "Identifiants déjà utilisés.",
         "auth/user-not-found": "Utilisateur non trouvé.",
         "auth/wrong-password": "Mot de passe incorrect.",
@@ -58,6 +64,7 @@ const Signup: React.FC = () => {
         messageTranslated[error.code] ||
         error.message ||
         "Une erreur est survenue lors de la création du compte.";
+
       setError(errorMsg);
       toast.error(errorMsg);
     }
@@ -71,8 +78,8 @@ const Signup: React.FC = () => {
 
         <Input
           fullWidth
-          size="lg"
           placeholder="Nom d'utilisateur"
+          size="lg"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -80,8 +87,8 @@ const Signup: React.FC = () => {
 
         <Input
           fullWidth
-          size="lg"
           placeholder="Âge"
+          size="lg"
           value={age}
           onChange={(e) => setAge(e.target.value)}
         />
@@ -89,8 +96,8 @@ const Signup: React.FC = () => {
 
         <Input
           fullWidth
-          size="lg"
           placeholder="Email"
+          size="lg"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -98,8 +105,8 @@ const Signup: React.FC = () => {
 
         <Input
           fullWidth
-          size="lg"
           placeholder="Mot de passe"
+          size="lg"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -111,17 +118,17 @@ const Signup: React.FC = () => {
 
         <Button
           className="w-full"
-          onPress={handleSignup}
-          variant="shadow"
           color="primary"
+          variant="shadow"
+          onPress={handleSignup}
         >
-          S'inscrire
+          S&apos;inscrire
         </Button>
         <Spacer y={1} />
-        
+
         <p className="text-center">
           Vous avez déjà un compte ?{" "}
-          <Link href="/login" className="text-blue-500">
+          <Link className="text-blue-500" href="/login">
             Se connecter
           </Link>
         </p>

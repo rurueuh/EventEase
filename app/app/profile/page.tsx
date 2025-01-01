@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "@/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import User from "@/model/Users";
+
 import PageLoaded from "./pageLoaded";
 import PageSkeleton from "./pageLoading";
+
+import User from "@/model/Users";
+import { auth, db } from "@/firebase";
 
 const Home: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -16,9 +18,11 @@ const Home: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const userRef = doc(db, "users", user.uid);
+
         getDoc(userRef).then((docSnap) => {
           if (docSnap.exists()) {
             let user = docSnap.data() as User;
+
             setUser(user);
           }
         });
@@ -30,15 +34,7 @@ const Home: React.FC = () => {
     return () => unsubscribe();
   }, [router]);
 
-  return (
-    <div>
-      {user ? (
-        <PageLoaded user={user} />
-      ) : (
-        <PageSkeleton />
-      )}
-    </div>
-  );
+  return <div>{user ? <PageLoaded user={user} /> : <PageSkeleton />}</div>;
 };
 
 export default Home;

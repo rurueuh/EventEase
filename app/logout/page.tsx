@@ -1,16 +1,13 @@
 "use client";
 import { signOut } from "firebase/auth";
-import { auth } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { Card, Button, Spacer } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
-
-// Icônes
 import { AiOutlineLogout } from "react-icons/ai";
+import { toast } from "react-hot-toast";
 
-// Import des toasts
-import { Toaster, toast } from "react-hot-toast";
+import { auth } from "@/firebase";
 
 const Logout: React.FC = () => {
   const router = useRouter();
@@ -21,7 +18,9 @@ const Logout: React.FC = () => {
       toast.success("Déconnexion réussie !");
       router.push("/login");
     } catch (error: any) {
-      toast.error(error.message || "Une erreur est survenue lors de la déconnexion.");
+      toast.error(
+        error.message || "Une erreur est survenue lors de la déconnexion.",
+      );
     }
   };
 
@@ -30,12 +29,7 @@ const Logout: React.FC = () => {
       <Card className="p-5 max-w-[400px] w-full">
         <div>
           <div className="w-[100px] mb-[10px] block mx-auto">
-            <Image
-              src="/logo.webp"
-              alt="Logo"
-              width={100}
-              height={100}
-            />
+            <Image alt="Logo" height={100} src="/logo.webp" width={100} />
           </div>
           <Spacer y={1} />
           <div>
@@ -55,8 +49,8 @@ const Logout: React.FC = () => {
 
         <Spacer y={3} />
         <p className="text-center">
-          Vous n'avez pas de compte ?{" "}
-          <Link href="/register" className="text-blue-500">
+          Vous n&apos;avez pas de compte ?{" "}
+          <Link className="text-blue-500" href="/register">
             Inscrivez-vous
           </Link>
         </p>
