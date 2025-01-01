@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { AiOutlineUser } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import { setCookie } from "cookies-next";
 
 import { toast } from "react-hot-toast";
 
@@ -20,9 +21,12 @@ const Login: React.FC = () => {
 
   const handleLogin = async (): Promise<void> => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/home");
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCred.user;
+      const idToken = await user.getIdToken(true);
+      setCookie("token", idToken);
       toast.success("Connexion réussie !");
+      router.push("/home");
     } catch (error: any) {
       const messageTranslated = {
         "auth/invalid-email": "Adresse email invalide.",
@@ -47,9 +51,12 @@ const Login: React.FC = () => {
   const handleGoogleLogin = async (): Promise<void> => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      router.push("/home");
+      const userCred = await signInWithPopup(auth, provider);
+      const user = userCred.user;
       toast.success("Connexion réussie !");
+      const idToken = await user.getIdToken(true);
+      setCookie("token", idToken);
+      router.push("/home");
     } catch (error: any) {
       const messageTranslated = {
         "auth/invalid-email": "Adresse email invalide.",

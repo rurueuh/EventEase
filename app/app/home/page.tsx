@@ -6,7 +6,7 @@ import { auth, db } from "@/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import User from "@/model/Users";
 
-const Home: React.FC = () => {
+const Home: React.FC = async () => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 

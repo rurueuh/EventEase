@@ -6,7 +6,7 @@ export const siteConfig = {
   navItems: [
     {
       label: "Clients",
-      href: "/home",
+      href: "/app/profile",
     },
     {
       label: "Login",
