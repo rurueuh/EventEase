@@ -1,0 +1,152 @@
+"use client";
+import { useState } from "react";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "@/firebase";
+import { useRouter } from "next/navigation";
+import { Card, Input, Button, Spacer, Divider, ButtonGroup } from "@nextui-org/react";
+import Image from "next/image";
+import Link from "next/link";
+
+import { AiOutlineUser } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
+
+import { toast } from "react-hot-toast";
+
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const router = useRouter();
+
+  const handleLogin = async (): Promise<void> => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/home");
+      toast.success("Connexion réussie !");
+    } catch (error: any) {
+      const messageTranslated = {
+        "auth/invalid-email": "Adresse email invalide.",
+        "auth/user-disabled": "Utilisateur désactivé.",
+        "auth/user-token-expired": "Session expirée.",
+        "auth/too-many-requests": "Trop de requêtes. Réessayez plus tard.",
+        "auth/operation-not-allowed": "Opération non autorisée.",
+        "auth/email-already-in-use": "Adresse email déjà utilisée.",
+        "auth/weak-password": "Mot de passe trop faible.",
+        "auth/invalid-credential": "Identifiants invalides.",
+        "auth/account-exists-with-different-credential": "Compte existant avec des identifiants différents.",
+        "auth/credential-already-in-use": "Identifiants déjà utilisés.",
+        "auth/user-not-found": "Utilisateur non trouvé.",
+        "auth/wrong-password": "Mot de passe incorrect.",
+        "auth/missing-password": "Mot de passe manquant.",
+      } as Record<string, string>;
+      setError(messageTranslated[error.code] || error.message || "An error occurred during login.");
+      toast.error(messageTranslated[error.code] || error.message || "Une erreur est survenue lors de la connexion.");
+    }
+  };
+
+  const handleGoogleLogin = async (): Promise<void> => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      router.push("/home");
+      toast.success("Connexion réussie !");
+    } catch (error: any) {
+      const messageTranslated = {
+        "auth/invalid-email": "Adresse email invalide.",
+        "auth/user-disabled": "Utilisateur désactivé.",
+        "auth/user-token-expired": "Session expirée.",
+        "auth/too-many-requests": "Trop de requêtes. Réessayez plus tard.",
+        "auth/operation-not-allowed": "Opération non autorisée.",
+        "auth/email-already-in-use": "Adresse email déjà utilisée.",
+        "auth/weak-password": "Mot de passe trop faible.",
+        "auth/invalid-credential": "Identifiants invalides.",
+        "auth/account-exists-with-different-credential": "Compte existant avec des identifiants différents.",
+        "auth/credential-already-in-use": "Identifiants déjà utilisés.",
+        "auth/user-not-found": "Utilisateur non trouvé.",
+        "auth/wrong-password": "Mot de passe incorrect.",
+        "auth/missing-password": "Mot de passe manquant.",
+      } as Record<string, string>;
+      setError(messageTranslated[error.code] || error.message || "An error occurred during login.");
+      toast.error(messageTranslated[error.code] || error.message || "Une erreur est survenue lors de la connexion.");
+    }
+  };
+
+  return (
+    <div className="flex justify-center items-center">
+      <Card className="p-5 max-w-[400px] w-full">
+        <div>
+          <div className="w-[100px] mb-[10px] block mx-auto">
+            <Image 
+              src="/logo.webp" 
+              alt="Logo" 
+              width={100}
+              height={100}
+            />
+          </div>
+          <Spacer y={1} />
+          <div>
+            <h3>Bienvenue sur EventEase</h3>
+          </div>
+          <Spacer y={5} />
+        </div>
+
+        <Input 
+          fullWidth 
+          size="lg" 
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Spacer y={1} />
+        <Input 
+          fullWidth 
+          size="lg" 
+          placeholder="Mot de passe"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Spacer y={5} />
+        <Divider />
+        <Spacer y={5} />
+
+        <ButtonGroup
+          className="p-[1px] rounded-md overflow-hidden bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+        >
+          <Button 
+            className="w-full !bg-transparent !text-white !border-none hover:!bg-transparent"
+            color="primary"
+            variant="shadow"
+            onPress={handleLogin}
+          >
+            <AiOutlineUser className="mr-2 w-6 h-6" />
+            Se connecter
+          </Button>
+          <Button 
+            className="w-full !bg-transparent !text-white !border-none hover:!bg-transparent"
+            color="secondary"
+            variant="shadow"
+            onPress={handleGoogleLogin}
+          >
+            <FcGoogle className="mr-2 w-6 h-6" />
+            Utiliser Google
+          </Button>
+        </ButtonGroup>
+
+        <Spacer y={1} />
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        <Spacer y={5} />
+        <Divider />
+        <Spacer y={5} />
+        <p className="text-center">
+          Pas encore de compte ?{" "}
+          <Link href="/signup" className="text-blue-500">
+            Créer un compte
+          </Link>
+        </p>
+      </Card>
+    </div>
+  );
+};
+
+export default Login;
