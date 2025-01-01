@@ -8,6 +8,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 
 import { auth, db } from "@/firebase";
+import User from "@/model/Users";
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -15,6 +16,8 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -33,11 +36,14 @@ const Signup: React.FC = () => {
         });
       }
 
+      let userDB = {} as User;
+      userDB.username = username;
+      userDB.age = age ? parseInt(age) : 0;
+      userDB.email = email;
+      userDB.createdAt = new Date();
+
       await setDoc(doc(db, "users", user.uid), {
-        username: username,
-        age: age,
-        email: email,
-        createdAt: new Date(),
+        ...userDB,
       });
 
       toast.success("Compte créé avec succès !");
@@ -66,6 +72,7 @@ const Signup: React.FC = () => {
         "Une erreur est survenue lors de la création du compte.";
 
       setError(errorMsg);
+      setLoading(false);
       toast.error(errorMsg);
     }
   };
@@ -120,7 +127,14 @@ const Signup: React.FC = () => {
           className="w-full"
           color="primary"
           variant="shadow"
+          {...(loading ? { isLoading: true } : {})}
+          {...(loading ? { disabled: true } : {})}
           onPress={handleSignup}
+          
+          onPressEnd={() => {
+            // add loading state
+            setLoading(true);
+          }}
         >
           S&apos;inscrire
         </Button>
