@@ -1,7 +1,10 @@
+"use client";
 import React, { useState, useEffect } from 'react';
-import { Input, Card, Spacer, CardBody } from '@nextui-org/react';
+import { Input, Card, CardBody, User } from '@nextui-org/react';
 import { db } from '@/firebase';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { FaSearch } from 'react-icons/fa';
+import Link from 'next/link';
 
 interface User {
   id: string;
@@ -25,7 +28,12 @@ const UserSearchBar: React.FC = () => {
 
     try {
       const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('username', '>=', term), where('username', '<=', term + '\uf8ff'), limit(5));
+      const q = query(
+        usersRef,
+        where('username', '>=', term),
+        where('username', '<=', term + '\uf8ff'),
+        limit(5)
+      );
 
       const querySnapshot = await getDocs(q);
       const results: User[] = [];
@@ -57,12 +65,23 @@ const UserSearchBar: React.FC = () => {
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem' }}>
       <Input
+        aria-label="Search"
+        classNames={{
+          inputWrapper: 'bg-default-100',
+          input: 'text-sm',
+        }}
+        labelPlacement="outside"
+        placeholder="Rechercher un utilisateur"
+        startContent={
+          <FaSearch className="text-base text-default-400 pointer-events-none flex-shrink-0" />
+        }
+        type="search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
       {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }} className='fixed'>
           <div className="spinner"></div>
           <style jsx>{`
             .spinner {
@@ -90,19 +109,23 @@ const UserSearchBar: React.FC = () => {
       )}
 
       {!loading && users.length > 0 && (
-        <div style={{ marginTop: '1rem' }}>
+        <div style={{ marginTop: '1rem' }} className='fixed flex flex-col'>
           {users.map((user) => (
-            <Card key={user.id} isPressable style={{ marginBottom: '0.5rem' }}>
-              <CardBody>
-                <h4>{user.username}</h4>
-              </CardBody>
-            </Card>
+            <Link href={`/app/profile/${user.username}`} key={user.id}>
+              <User
+                avatarProps={{
+                  src: "http://localhost:3000/_next/image?url=%2Fprofile.webp&w=384&q=75",
+                }}
+                name={user.username}
+                onClick={() => {setSearchTerm(''); setUsers([])}}
+              />
+            </Link>
           ))}
         </div>
       )}
 
       {!loading && searchTerm.trim() !== '' && users.length === 0 && !error && (
-        <p style={{ marginTop: '1rem' }}>Aucun utilisateur trouvé.</p>
+        <p style={{ marginTop: '1rem' }} className='fixed'>Aucun utilisateur trouvé.</p>
       )}
     </div>
   );
