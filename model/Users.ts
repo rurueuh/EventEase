@@ -14,7 +14,7 @@ interface User {
   aboutEmail?: string;
   aboutWebsite?: string;
 
-  basicInfoBirthDate?: Date;
+  basicInfoBirthDate?: string;
   basicInfoGender?: string;
   basicInfoRelationshipStatus?: string;
 
