@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button, ButtonGroup, Spacer, Tab, Tabs } from "@nextui-org/react";
 
 import User from "@/model/Users";
+import UserSearchBar from "@/components/searchBarUser";
 
 export default function PageLoaded({ user }: { user: User }) {
   return (
@@ -105,6 +106,7 @@ export default function PageLoaded({ user }: { user: User }) {
                 {user.aboutEmail && <p>Email: {user.aboutEmail}</p>}
                 {user.aboutWebsite && <p>Site web: {user.aboutWebsite}</p>}
               </div>
+              <Spacer y={4} />
               <div>
                 <h3 className="text-lg font-semibold">Informations personnelles:</h3>
                 {!user.basicInfoBirthDate &&
