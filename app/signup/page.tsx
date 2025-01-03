@@ -41,6 +41,8 @@ const Signup: React.FC = () => {
       userDB.age = age ? parseInt(age) : 0;
       userDB.email = email;
       userDB.createdAt = new Date();
+      userDB.updatedAt = new Date();
+      userDB.uid = user.uid;
 
       await setDoc(doc(db, "users", user.uid), {
         ...userDB,

@@ -1,16 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { auth } from "@/firebase";
 import {
   getFirestore,
   doc,
-  getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import User from "@/model/Users";
-import { useRouter } from "next/router";
 
 const db = getFirestore();
 
