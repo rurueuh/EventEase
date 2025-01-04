@@ -1,15 +1,12 @@
 "use strict";
 
-import { Button, Input, Textarea, Spacer, Card, CardBody, CardFooter, CardHeader } from '@nextui-org/react';
-import { useMemo, useState } from 'react';
+import { Button, Spacer, Card, CardBody, CardFooter, CardHeader } from '@nextui-org/react';
+import { useMemo } from 'react';
 import User from "@/model/Users";
 
 import { toast } from "react-hot-toast";
 
-import { auth, db } from "@/firebase";
-import { doc, or, setDoc, getDocs, getDoc, collection } from "firebase/firestore";
 import Event from '@/model/Event';
-import Map from '@/components/map';
 import dynamic from 'next/dynamic';
 
 const DynamicMap = dynamic(() => import('@/components/map'), { ssr: false });
@@ -27,7 +24,7 @@ export default function pageLoaded({
         return events.map((event) => ({
             id: event.title,
             lat: Number(event.lat) || 0,
-            lng: Number(event.log) || 0,
+            lng: Number(event.lng) || 0,
             label: event.title,
             event: event,
         }));
