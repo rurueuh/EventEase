@@ -6,6 +6,8 @@ export default interface Event {
     description: string;
     location: string;
     organizer: string;
+    lat: number,
+    log: number,
     organizerId: string;
     time: string;
     title: string;

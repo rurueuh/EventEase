@@ -2,15 +2,17 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import { auth, db } from "@/firebase";
 import User from "@/model/Users";
 import PageLoaded from "./pageLoaded";
 import PageSkeleton from "./pageSkeleton";
+import Event from "@/model/Event";
 
 const Home: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +24,17 @@ const Home: React.FC = () => {
           if (docSnap.exists()) {
             let user = docSnap.data() as User;
 
-            setUser(user);
+            const eventsRef = collection(db, "events");
+            const querySnapshot = getDocs(eventsRef);
+            querySnapshot.then((querySnapshot) => {
+              let events: Event[] = [];
+              querySnapshot.forEach((doc) => {
+                let event = doc.data() as Event;
+                events.push(event);
+              });
+              setEvents(events);
+              setUser(user);
+            });
           }
         });
       } else {
@@ -33,8 +45,9 @@ const Home: React.FC = () => {
     return () => unsubscribe();
   }, [router]);
 
+
   return (
-    <div>{user ? <PageLoaded _user={user} /> : <PageSkeleton />}</div>
+    <div>{user ? <PageLoaded _user={user} events={events} /> : <PageSkeleton />}</div>
   );
 };
 

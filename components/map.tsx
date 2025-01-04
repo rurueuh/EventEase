@@ -2,13 +2,14 @@
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
+import Event from "@/model/Event";
 
-// Types pour les marqueurs
 type MarkerType = {
     id: string;
     lat: number;
     lng: number;
     label: string;
+    event: Event;
 };
 
 type MapProps = {
@@ -32,11 +33,9 @@ const Map: React.FC<MapProps> = ({ markers, handleMarkerClick }) => {
             6
         );
 
-        // remove scroll bar zoom css
         mapInstance.current.options.scrollWheelZoom = false;
         mapInstance.current.options.center = [markers[0].lat, markers[0].lng];
 
-        // set marker icon
         const icon = L.icon({
             iconUrl: "/marker-icon-2x.png",
             shadowUrl: "/marker-shadow.png",
