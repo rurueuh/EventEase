@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
-import { auth, db } from "@/firebase";
-import User from "@/model/Users";
 import PageLoaded from "./pageLoaded";
 import PageSkeleton from "./pageSkeleton";
+
+import { auth, db } from "@/firebase";
+import User from "@/model/Users";
 
 const Home: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -33,9 +34,7 @@ const Home: React.FC = () => {
     return () => unsubscribe();
   }, [router]);
 
-  return (
-    <div>{user ? <PageLoaded _user={user} /> : <PageSkeleton />}</div>
-  );
+  return <div>{user ? <PageLoaded _user={user} /> : <PageSkeleton />}</div>;
 };
 
 export default Home;

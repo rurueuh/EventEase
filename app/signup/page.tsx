@@ -37,6 +37,7 @@ const Signup: React.FC = () => {
       }
 
       let userDB = {} as User;
+
       userDB.username = username;
       userDB.age = age ? parseInt(age) : 0;
       userDB.email = email;
@@ -132,9 +133,7 @@ const Signup: React.FC = () => {
           {...(loading ? { isLoading: true } : {})}
           {...(loading ? { disabled: true } : {})}
           onPress={handleSignup}
-          
           onPressEnd={() => {
-            // add loading state
             setLoading(true);
           }}
         >

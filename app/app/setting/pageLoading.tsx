@@ -7,7 +7,7 @@ const SettingSkeleton: FC = () => {
   const fieldsCount = 10;
 
   const skeletonFields = Array.from({ length: fieldsCount }).map((_, index) => (
-    <Card key={index} isHoverable style={{ width: "100%"}}>
+    <Card key={index} isHoverable style={{ width: "100%" }}>
       <div style={{ marginBottom: "12px" }}>
         <Skeleton style={{ height: "20px", width: "40%" }} />
       </div>
@@ -23,10 +23,12 @@ const SettingSkeleton: FC = () => {
 
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "24px" }}>
-      <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "24px" }}>Paramètres</h1>
-      <div>
-        {skeletonFields}
-      </div>
+      <h1
+        style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "24px" }}
+      >
+        Paramètres
+      </h1>
+      <div>{skeletonFields}</div>
     </div>
   );
 };

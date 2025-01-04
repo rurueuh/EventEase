@@ -25,7 +25,6 @@ export default function PageSkeleton() {
 
         <Spacer y={2} />
 
-        {/* Job */}
         <Skeleton className="w-[30%] h-[20px] rounded-md" />
 
         <Spacer y={4} />

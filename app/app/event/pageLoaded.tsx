@@ -1,68 +1,124 @@
 "use strict";
 
-import { Button, Spacer, Card, CardBody, CardFooter, CardHeader } from '@nextui-org/react';
-import { useMemo } from 'react';
+import {
+  Button,
+  Spacer,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "@nextui-org/react";
+import { useMemo } from "react";
+import dynamic from "next/dynamic";
+
 import User from "@/model/Users";
+import Event from "@/model/Event";
 
-import { toast } from "react-hot-toast";
+const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 
-import Event from '@/model/Event';
-import dynamic from 'next/dynamic';
-
-const DynamicMap = dynamic(() => import('@/components/map'), { ssr: false });
-
-export default function pageLoaded({
-    _user,
-    events
+export default function PageLoaded({
+  _user,
+  events,
+  position,
 }: {
-    _user: User;
-    events: Event[];
-}
-) {
-    console.log(events.at(0));
-    const markers = useMemo(() => {
-        return events.map((event) => ({
-            id: event.title,
-            lat: Number(event.lat) || 0,
-            lng: Number(event.lng) || 0,
-            label: event.title,
-            event: event,
-        }));
-    }, [events]);
+  _user: User;
+  events: Event[];
+  position: { lat: number; lng: number };
+}) {
+  const UseMarkers = useMemo(() => {
+    return events.map((event) => ({
+      id: event.title,
+      lat: Number(event.lat) || 0,
+      lng: Number(event.lng) || 0,
+      label: event.title,
+      event: event,
+    }));
+  }, [events]);
 
-    const handleMarkerClick = (id: string) => {
-        alert(`Marqueur cliqué : ${id} lat: ${markers.find((marker) => marker.id === id)?.lat} lng: ${markers.find((marker) => marker.id === id)?.lng}`);
-    };
-    return (
-        <>
-            <h2>Liste des evenements disponibles</h2>
+  let lastid = "";
 
-            <div className='flex flex-wrap'>
-                <aside className="aside basis-5/12 " style={{ height: "90vh", padding: "1rem", overflowY: "auto" }}>
-                    <DynamicMap markers={markers} handleMarkerClick={handleMarkerClick} />
-                </aside>
-                <div className='basis-7/12' style={{ height: "90vh", padding: "1rem", overflowY: "auto" }}>
-                    <div className='flex flex-wrap'>
-                        {events.map((event) => (
-                            <Card key={event.title} style={{ marginBottom: "1rem" }} className='basis-5/12 m-4'>
-                                <CardHeader>
-                                    <h3 className='text-center text-xl'>{event.title}</h3>
-                                </CardHeader>
-                                <CardBody>
-                                    <p>{event.description}</p>
-                                    <Spacer y={5} />
-                                    <p>le {event.date} à {event.time}</p>
-                                    <Spacer y={4} />
-                                    <p>à {event.location}</p>
-                                </CardBody>
-                                <CardFooter>
-                                    <Button>Participer</Button>
-                                </CardFooter>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+  const handleMarkerClick = (id: string) => {
+    const card = document.getElementById(id);
+
+    if (card) {
+      card.style.backgroundColor = "hsl(var(--nextui-primary) / .4)";
+      card.scrollIntoView({ behavior: "smooth" });
+      if (lastid) {
+        const lastcard = document.getElementById(lastid);
+
+        if (lastcard) {
+          lastcard.style.backgroundColor = "revert-layer";
+        } else {
+          alert("Last card not found");
+        }
+      }
+      lastid = id;
+    } else {
+      alert("Card not found");
+    }
+  };
+
+  return (
+    <>
+      <h2>Liste des evenements disponibles</h2>
+
+      <div className="flex flex-wrap">
+        <aside
+          className="aside basis-5/12 "
+          style={{ height: "90vh", padding: "1rem", overflowY: "auto" }}
+        >
+          {position.lat && position.lng ? (
+            <DynamicMap
+              handleMarkerClick={handleMarkerClick}
+              markers={UseMarkers}
+              setViewPosition={position}
+            />
+          ) : (
+            <DynamicMap
+              handleMarkerClick={handleMarkerClick}
+              markers={UseMarkers}
+            />
+          )}
+        </aside>
+        <div
+          className="basis-7/12"
+          style={{
+            height: "90vh",
+            padding: "1rem",
+            overflowY: "auto",
+            scrollbarWidth: "none",
+          }}
+        >
+          <div className="flex flex-wrap">
+            {events.map((event) => (
+              <Card
+                key={event.title}
+                className="basis-5/12 m-4"
+                id={event.title}
+                style={{ marginBottom: "1rem" }}
+              >
+                <CardHeader>
+                  <h3 className="text-center text-xl">{event.title}</h3>
+                </CardHeader>
+                <CardBody>
+                  <p>{event.description}</p>
+                  <Spacer y={5} />
+                  <p>
+                    le {event.date} à {event.time}
+                  </p>
+                  <Spacer y={4} />
+                  <p>à {event.location}</p>
+                </CardBody>
+                <CardFooter>
+                  <Button color="primary" variant="shadow">
+                    Participer
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

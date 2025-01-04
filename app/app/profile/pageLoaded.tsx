@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Button, ButtonGroup, Spacer, Tab, Tabs } from "@nextui-org/react";
 
 import User from "@/model/Users";
-import UserSearchBar from "@/components/searchBarUser";
 
 export default function PageLoaded({ user }: { user: User }) {
   return (
@@ -94,11 +93,15 @@ export default function PageLoaded({ user }: { user: User }) {
             </Tab>
             <Tab title="A propos" value="A propos">
               <div>
-                <h3 className="text-lg font-semibold">Informations de contact:</h3>
+                <h3 className="text-lg font-semibold">
+                  Informations de contact:
+                </h3>
                 {!user.aboutPhone &&
                   !user.aboutLocationAddress &&
                   !user.aboutEmail &&
-                  !user.aboutWebsite && <p className="text-sm">Pas d&apos;information de contact</p>}
+                  !user.aboutWebsite && (
+                    <p className="text-sm">Pas d&apos;information de contact</p>
+                  )}
                 {user.aboutPhone && <p>Phone: {user.aboutPhone}</p>}
                 {user.aboutLocationAddress && (
                   <p>Adresse: {user.aboutLocationAddress}</p>
@@ -108,10 +111,14 @@ export default function PageLoaded({ user }: { user: User }) {
               </div>
               <Spacer y={4} />
               <div>
-                <h3 className="text-lg font-semibold">Informations personnelles:</h3>
+                <h3 className="text-lg font-semibold">
+                  Informations personnelles:
+                </h3>
                 {!user.basicInfoBirthDate &&
                   !user.basicInfoGender &&
-                  !user.basicInfoRelationshipStatus && <p className="text-sm">Pas d&apos;information personnel</p>}
+                  !user.basicInfoRelationshipStatus && (
+                    <p className="text-sm">Pas d&apos;information personnel</p>
+                  )}
                 {user.basicInfoBirthDate && (
                   <p>Date de naissance: {user.basicInfoBirthDate}</p>
                 )}
@@ -119,9 +126,7 @@ export default function PageLoaded({ user }: { user: User }) {
                 {user.basicInfoRelationshipStatus && (
                   <p>Statut relationnel: {user.basicInfoRelationshipStatus}</p>
                 )}
-
               </div>
-
             </Tab>
             <Tab title="Description" value="Description">
               <p>{user.description || "Pas de description"}</p>

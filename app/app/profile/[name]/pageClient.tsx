@@ -10,12 +10,7 @@ import PageSkeleton from "./pageLoading";
 import User from "@/model/Users";
 import { auth, db } from "@/firebase";
 
-function _home({
-  name,
-}: {
-  name: string
-}) {
-  if (!name) return null;
+function _home({ name }: { name: string }) {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
@@ -24,15 +19,16 @@ function _home({
       if (user) {
         const allUsers = collection(db, "users");
         const querySnapshot = getDocs(allUsers);
+
         querySnapshot.then((snapshot) => {
           snapshot.forEach((doc) => {
             if (doc.data().username === name) {
               let user = doc.data() as User;
+
               setUser(user);
             }
           });
         });
-
       } else {
         router.push("/login");
       }
@@ -41,7 +37,9 @@ function _home({
     return () => unsubscribe();
   }, [router]);
 
+  if (!name) return null;
+
   return <div>{user ? <PageLoaded user={user} /> : <PageSkeleton />}</div>;
-};
+}
 
 export default _home;

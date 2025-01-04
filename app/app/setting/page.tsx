@@ -1,22 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { auth } from "@/firebase"; // Firebase config
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import User from "@/model/Users";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+
 import _settingLoaded from "./pageLoaded";
 import PageSkeleton from "./pageLoading";
 
+import User from "@/model/Users";
+import { auth } from "@/firebase";
+
 const db = getFirestore();
 
-const Settings = () => {
+export default function Settings() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
     age: "",
@@ -53,15 +51,16 @@ const Settings = () => {
               aboutLocationAddress: user.aboutLocationAddress || "",
               aboutEmail: user.aboutEmail || "",
               aboutWebsite: user.aboutWebsite || "",
-              basicInfoBirthDate: user.basicInfoBirthDate as unknown as string || "",
+              basicInfoBirthDate:
+                (user.basicInfoBirthDate as unknown as string) || "",
               basicInfoGender: user.basicInfoGender || "",
-              basicInfoRelationshipStatus: user.basicInfoRelationshipStatus || "",
+              basicInfoRelationshipStatus:
+                user.basicInfoRelationshipStatus || "",
             });
             setLoading(false);
           }
         });
       } else {
-        const router = useRouter();
         router.push("/login");
       }
     });
@@ -73,9 +72,5 @@ const Settings = () => {
     return <PageSkeleton />;
   }
 
-  return (
-    <_settingLoaded formData={formData} setFormData={setFormData} />
-  );
+  return <_settingLoaded formData={formData} setFormData={setFormData} />;
 };
-
-export default Settings;
