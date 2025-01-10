@@ -22,13 +22,13 @@ type formData = {
   basicInfoRelationshipStatus: string;
 };
 
-export default function _settingLoaded({
+export default function SettingLoaded({
   formData,
   setFormData,
-}: {
+}: Readonly<{
   formData: formData;
   setFormData: (formData: formData) => void;
-}) {
+}>) {
   const [savingStates, setSavingStates] = useState<Record<string, boolean>>({});
 
   const handleChange = (

@@ -5,7 +5,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-import _settingLoaded from "./pageLoaded";
+import SettingLoaded from "./pageLoaded";
 import PageSkeleton from "./pageLoading";
 
 import User from "@/model/Users";
@@ -44,18 +44,18 @@ export default function Settings() {
             setFormData({
               username: user.username,
               age: user.age ? user.age.toString() : "",
-              location: user.location || "",
-              job: user.job || "",
-              description: user.description || "",
-              aboutPhone: user.aboutPhone || "",
-              aboutLocationAddress: user.aboutLocationAddress || "",
-              aboutEmail: user.aboutEmail || "",
-              aboutWebsite: user.aboutWebsite || "",
+              location: user.location ?? "",
+              job: user.job ?? "",
+              description: user.description ?? "",
+              aboutPhone: user.aboutPhone ?? "",
+              aboutLocationAddress: user.aboutLocationAddress ?? "",
+              aboutEmail: user.aboutEmail ?? "",
+              aboutWebsite: user.aboutWebsite ?? "",
               basicInfoBirthDate:
                 (user.basicInfoBirthDate as unknown as string) || "",
-              basicInfoGender: user.basicInfoGender || "",
+              basicInfoGender: user.basicInfoGender ?? "",
               basicInfoRelationshipStatus:
-                user.basicInfoRelationshipStatus || "",
+                user.basicInfoRelationshipStatus ?? "",
             });
             setLoading(false);
           }
@@ -72,5 +72,5 @@ export default function Settings() {
     return <PageSkeleton />;
   }
 
-  return <_settingLoaded formData={formData} setFormData={setFormData} />;
+  return <SettingLoaded formData={formData} setFormData={setFormData} />;
 };

@@ -6,8 +6,8 @@ import { Card, Skeleton } from "@nextui-org/react";
 const SettingSkeleton: FC = () => {
   const fieldsCount = 10;
 
-  const skeletonFields = Array.from({ length: fieldsCount }).map((_, index) => (
-    <Card key={index} isHoverable style={{ width: "100%" }}>
+  const skeletonFields = Array.from({ length: fieldsCount }).map((_, id) => (
+    <Card key={id} isHoverable style={{ width: "100%" }}>
       <div style={{ marginBottom: "12px" }}>
         <Skeleton style={{ height: "20px", width: "40%" }} />
       </div>

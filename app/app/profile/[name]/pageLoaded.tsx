@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Spacer, Tab, Tabs } from "@nextui-org/react";
 
 import User from "@/model/Users";
 
-export default function PageLoaded({ user }: { user: User }) {
+export default function PageLoaded({ user }: Readonly<{ user: User }>) {
   return (
     <div className="flex">
       <aside className="block basis-2/5">
@@ -48,14 +48,14 @@ export default function PageLoaded({ user }: { user: User }) {
           <div className="flex">
             <CiLocationOn className="h-8 w-8 pt-1 text-gray-500" />
             <h3 className="text-lg font-semibold pt-1 text-gray-500">
-              {user.location || "Pas de localisation"}
+              {user.location ?? "Pas de localisation"}
             </h3>
           </div>
         </div>
         <Spacer y={2} />
         <div>
           <p className=" text-blue-600 ">
-            {user.job || "Travail non préciser"}
+            {user.job ?? "Travail non préciser"}
           </p>
         </div>
         <Spacer y={4} />
@@ -129,7 +129,7 @@ export default function PageLoaded({ user }: { user: User }) {
               </div>
             </Tab>
             <Tab title="Description" value="Description">
-              <p>{user.description || "Pas de description"}</p>
+              <p>{user.description ?? "Pas de description"}</p>
             </Tab>
           </Tabs>
         </div>

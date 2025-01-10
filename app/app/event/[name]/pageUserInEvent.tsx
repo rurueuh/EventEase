@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Spacer, Tab, Tabs } from "@nextui-org/react";
 
 import User from "@/model/Users";
 
-export default function PageLoaded({ user }: Readonly<{ user: User }>) {
+export default function PageLoaded({ user }: Readonly<{ user: User }>): JSX.Element {
   return (
     <div className="flex">
       <aside className="block basis-2/5">

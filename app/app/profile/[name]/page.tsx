@@ -1,13 +1,13 @@
-import _home from "./pageClient";
+import UserProfilePage from "./pageClient";
 
 export default async function Home({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ name: string }>;
-}) {
+}>) {
   const name = (await params).name;
 
   if (!name) return null;
 
-  return <_home name={name} />;
+  return <UserProfilePage name={name} />;
 }

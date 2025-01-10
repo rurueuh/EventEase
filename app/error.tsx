@@ -2,13 +2,13 @@
 
 import { useEffect } from "react";
 
-export default function Error({
+export default function ErrorHandler({
   error,
   reset,
-}: {
+}: Readonly<{
   error: Error;
   reset: () => void;
-}) {
+}>): JSX.Element {
   useEffect(() => {
     // Log the error to an error reporting service
     /* eslint-disable no-console */

@@ -18,16 +18,18 @@ type MapProps = {
   handleMarkerClick?: (id: string) => void;
   handlerClick?: (event: LeafletMouseEvent) => void;
   setViewPosition?: { lat: number; lng: number };
+  classname?: string;
 };
 
-const Map: React.FC<MapProps> = ({
+const InteractiveMap: React.FC<MapProps> = ({
   markers,
   handleMarkerClick,
   handlerClick,
   setViewPosition,
+  classname,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  var mapInstance = useRef<L.Map | null>(null);
+  let mapInstance = useRef<L.Map | null>(null);
   let allMarkers: L.Marker[] = [];
 
   useEffect(() => {
@@ -106,7 +108,9 @@ const Map: React.FC<MapProps> = ({
     };
   }, [markers]);
 
-  return <div ref={mapRef} style={{ height: "500px", width: "100%" }} />;
+  if (!classname)
+    return <div ref={mapRef} style={{ height: "500px", width: "100%" }} />;
+  else return <div ref={mapRef} className={classname} />;
 };
 
-export default Map;
+export default InteractiveMap;

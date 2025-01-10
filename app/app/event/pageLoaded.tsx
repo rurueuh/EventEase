@@ -108,6 +108,10 @@ export default function PageLoaded({
                   </p>
                   <Spacer y={4} />
                   <p>à {event.location}</p>
+                  <Spacer y={4} />
+                  <p> par {event.organizer}</p>
+                  <Spacer y={4} />
+                  <p> {event.attendees.length} participants</p>
                 </CardBody>
                 <CardFooter>
                   <Button color="primary" variant="shadow">

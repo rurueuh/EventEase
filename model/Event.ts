@@ -1,7 +1,7 @@
-import User from "./Users";
+import { DocumentReference } from "firebase/firestore";
 
 export default interface Event {
-  attendees: User[];
+  attendees: DocumentReference[];
   date: string;
   description: string;
   location: string;
@@ -11,4 +11,5 @@ export default interface Event {
   organizerId: string;
   time: string;
   title: string;
+  image?: string;
 }
