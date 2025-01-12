@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { collection, addDoc, query, onSnapshot, orderBy, getDocs, QuerySnapshot, doc, where, Timestamp, updateDoc, getDoc } from "firebase/firestore";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { collection, query, onSnapshot, orderBy, getDocs, doc, where, Timestamp, updateDoc, getDoc, Query, DocumentData } from "firebase/firestore";
 import { db } from "@/firebase";
-import { randomBytes, randomUUID } from "crypto";
+import { randomBytes} from "crypto";
 
 type Props = {
     eventID: string;
@@ -22,34 +22,19 @@ interface ChatInterface {
 }
 
 export const Chat: React.FC<Props> = ({ eventID, userId }: Props) => {
-    const [messages, setMessage] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [myMessage, setMyMessage] = useState<string>("");
 
     useEffect(() => {
         const q = query(collection(db, "chats"), where("eventID", "==", eventID) && orderBy("timestamp", "asc"));
 
-        const unsubscribe = onSnapshot(q, () => {
-            getDocs(q).then((snap) => {
-                snap.forEach((doc) => {
-                    let chat = doc.data() as ChatInterface;
-                    setMessage(chat.messages);
-                });
-            });
-        })
+        const unsubscribe = subscribeToChat(q, setMessages)
 
         const q2 = query(collection(db, "chats"), where("eventID", "==", eventID));
     
-        getDocs(q2).then((snap) => {
-            snap.forEach((doc) => {
-                let chat = doc.data() as ChatInterface;
-                chat.messages.forEach((m) => {
-                    m.uid = randomBytes(1024) as unknown as string;
-                })
-                setMessage(chat.messages);
-            });
-        });
+        fetchAndSetChatMessages(q2, setMessages);
         return () => unsubscribe();
-    }, [messages, setMessage])
+    }, [messages, setMessages])
 
     const sendMessage = async () => {
         if (!myMessage)
@@ -93,3 +78,29 @@ export const Chat: React.FC<Props> = ({ eventID, userId }: Props) => {
 }
 
 export default Chat
+
+function subscribeToChat(q: Query<DocumentData, DocumentData>, setMessages: Dispatch<SetStateAction<Message[]>>) {
+    return onSnapshot(q, () => {
+        getDocs(q).then((snap) => {
+            snap.forEach((doc) => {
+                let chat = doc.data() as ChatInterface;
+                setMessages(chat.messages);
+            });
+        });
+    });
+}
+
+function fetchAndSetChatMessages(
+    q2 : Query<DocumentData, DocumentData>,
+    setMessages: Dispatch<SetStateAction<Message[]>>
+) {
+    getDocs(q2).then((snap) => {
+        snap.forEach((doc) => {
+            let chat = doc.data() as ChatInterface;
+            chat.messages.forEach((m) => {
+                m.uid = randomBytes(1024) as unknown as string;
+            });
+            setMessages(chat.messages);
+        });
+    });
+}
