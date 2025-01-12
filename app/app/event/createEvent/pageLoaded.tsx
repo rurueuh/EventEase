@@ -2,7 +2,12 @@
 
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { toast } from "react-hot-toast";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  DocumentData,
+  DocumentReference,
+  setDoc,
+} from "firebase/firestore";
 import dynamic from "next/dynamic";
 import L from "leaflet";
 
@@ -14,7 +19,11 @@ const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 
 export default function PageLoaded({
   _user,
-}: Readonly<{ _user: User }>): JSX.Element {
+  userRef,
+}: Readonly<{
+  _user: User;
+  userRef: DocumentReference<DocumentData, DocumentData>;
+}>): JSX.Element {
   let lat = 0,
     lng = 0;
 
@@ -61,7 +70,7 @@ export default function PageLoaded({
       ...formData,
       organizer: _user.username,
       organizerId: _user.uid,
-      attendees: [],
+      attendees: [userRef],
     })
       .then(() => {
         toast.success("Événement créé avec succès !");
