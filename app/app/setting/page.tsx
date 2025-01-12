@@ -73,4 +73,4 @@ export default function Settings() {
   }
 
   return <SettingLoaded formData={formData} setFormData={setFormData} />;
-};
+}

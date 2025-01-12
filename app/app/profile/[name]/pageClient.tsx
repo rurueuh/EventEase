@@ -3,13 +3,13 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 import PageLoaded from "./pageLoaded";
 import PageSkeleton from "./pageLoading";
 
 import User from "@/model/Users";
 import { auth, db } from "@/firebase";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 function UserProfilePage({ name }: Readonly<{ name: string }>) {
   const [user, setUser] = useState<User | null>(null);
@@ -23,7 +23,11 @@ function UserProfilePage({ name }: Readonly<{ name: string }>) {
 }
 
 export default UserProfilePage;
-function initializeUserSession(router: AppRouterInstance, name: string, setUser: Dispatch<SetStateAction<User | null>>) {
+function initializeUserSession(
+  router: AppRouterInstance,
+  name: string,
+  setUser: Dispatch<SetStateAction<User | null>>,
+) {
   const unsubscribe = onAuthStateChanged(auth, (user) => {
     if (!user) {
       router.push("/login");
@@ -44,7 +48,5 @@ function initializeUserSession(router: AppRouterInstance, name: string, setUser:
 
   return () => {
     unsubscribe();
-
   };
 }
-

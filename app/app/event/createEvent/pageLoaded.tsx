@@ -12,7 +12,9 @@ import { db } from "@/firebase";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 
-export default function PageLoaded({ _user }: Readonly<{ _user: User }>): JSX.Element {
+export default function PageLoaded({
+  _user,
+}: Readonly<{ _user: User }>): JSX.Element {
   let lat = 0,
     lng = 0;
 

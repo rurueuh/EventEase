@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { getDoc, doc, DocumentReference } from "firebase/firestore";
 
-// import PageLoaded from "./pageUserInEvent";
 import PageSkeleton from "./pageLoading";
+import PageLoadedNotInEvent from "./pageUserNotInEvent";
 
 import User from "@/model/Users";
 import { auth, db } from "@/firebase";
 import Event from "@/model/Event";
-import PageLoadedNotInEvent from "./pageUserNotInEvent";
+import PageLoadedInEvent from "./pageUserInEvent";
 
 function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
   const [user, setUser] = useState<User | null>(null);
@@ -24,6 +24,7 @@ function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const userRef = doc(db, "users", user.uid);
+
         setUserDocs(userRef);
 
         getDoc(userRef).then((docSnap) => {
@@ -31,15 +32,18 @@ function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
             let user = docSnap.data() as User;
 
             const eventRef = doc(db, "events", name);
+
             setEventDocs(eventRef);
             getDoc(eventRef).then((docSnap) => {
               if (docSnap.exists()) {
                 let event = docSnap.data() as Event;
-                // get all participants
+
                 event.attendees.forEach(async (attendee) => {
                   const attendeeDoc = await getDoc(attendee);
+
                   if (attendeeDoc.exists()) {
                     let participant = attendeeDoc.data() as User;
+
                     setParticipants((prev) => [...prev, participant]);
                   }
                 });
@@ -63,7 +67,46 @@ function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
   if (!event) return <PageSkeleton />;
   if (!userDocs) return <PageSkeleton />;
   if (!eventDocs) return <PageSkeleton />;
-  return <div>{participants ? <PageLoadedNotInEvent _user={user} userDocs={userDocs} event={event} eventDocs={eventDocs} participants={participants} /> : <PageSkeleton />}</div>;
+
+  let isUserInEvent = participants.filter((u) => {
+    if (u.uid == user.uid)
+      return true;
+    return false;
+  });
+
+  if (isUserInEvent.length != 0) {
+    return (
+      <div>
+      {participants ? (
+        <PageLoadedInEvent
+          _user={user}
+          event={event}
+          eventDocs={eventDocs}
+          participants={participants}
+          userDocs={userDocs}
+        />
+      ) : (
+        <PageSkeleton />
+      )}
+    </div>
+    )
+  }
+
+  return (
+    <div>
+      {participants ? (
+        <PageLoadedNotInEvent
+          _user={user}
+          event={event}
+          eventDocs={eventDocs}
+          participants={participants}
+          userDocs={userDocs}
+        />
+      ) : (
+        <PageSkeleton />
+      )}
+    </div>
+  );
 }
 
 export default EventDetailsPage;
