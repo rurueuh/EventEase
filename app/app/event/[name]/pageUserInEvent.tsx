@@ -9,6 +9,7 @@ import PageSkeleton from "./pageLoading";
 import UserList from "@/components/userList";
 import User from "@/model/Users";
 import Event from "@/model/Event";
+import Chat from "@/components/chat";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 const numberOfProfilAttendeesByGrid = 16;
@@ -132,12 +133,7 @@ export default function PageLoadedInEvent({
       <div className="basis-4/12 self-start">
         <DynamicMap classname="w-full h-[300px]" markers={markers} />
         <div>
-          <h2>DATE TYPE CALENDRIER</h2>
-          <ul>
-            <li>DATE TYPE CALENDRIER 1</li>
-            <li>DATE TYPE CALENDRIER 2</li>
-            <li>DATE TYPE CALENDRIER 3</li>
-          </ul>
+          <Chat eventID="eventID" userId={_user.uid} />
         </div>
       </div>
     </div>
