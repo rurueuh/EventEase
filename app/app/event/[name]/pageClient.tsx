@@ -6,11 +6,11 @@ import { getDoc, doc, DocumentReference } from "firebase/firestore";
 
 import PageSkeleton from "./pageLoading";
 import PageLoadedNotInEvent from "./pageUserNotInEvent";
+import PageLoadedInEvent from "./pageUserInEvent";
 
 import User from "@/model/Users";
 import { auth, db } from "@/firebase";
 import Event from "@/model/Event";
-import PageLoadedInEvent from "./pageUserInEvent";
 
 function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
   const [user, setUser] = useState<User | null>(null);
@@ -69,27 +69,27 @@ function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
   if (!eventDocs) return <PageSkeleton />;
 
   let isUserInEvent = participants.filter((u) => {
-    if (u.uid == user.uid)
-      return true;
+    if (u.uid == user.uid) return true;
+
     return false;
   });
 
   if (isUserInEvent.length != 0) {
     return (
       <div>
-      {participants ? (
-        <PageLoadedInEvent
-          _user={user}
-          event={event}
-          eventDocs={eventDocs}
-          participants={participants}
-          userDocs={userDocs}
-        />
-      ) : (
-        <PageSkeleton />
-      )}
-    </div>
-    )
+        {participants ? (
+          <PageLoadedInEvent
+            _user={user}
+            event={event}
+            eventDocs={eventDocs}
+            participants={participants}
+            userDocs={userDocs}
+          />
+        ) : (
+          <PageSkeleton />
+        )}
+      </div>
+    );
   }
 
   return (
