@@ -1,11 +1,14 @@
 "use client";
 import { CiLocationOn } from "react-icons/ci";
 import Image from "next/image";
-import { Button, ButtonGroup, Spacer, Tab, Tabs } from "@nextui-org/react";
+import { Button, ButtonGroup, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 
 import User from "@/model/Users";
+import ModalImpossibleNotRealSite from "@/components/modalImpossible";
 
 export default function PageLoaded({ user }: Readonly<{ user: User }>) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <div className="flex">
       <aside className="block basis-2/5">
@@ -69,8 +72,9 @@ export default function PageLoaded({ user }: Readonly<{ user: User }>) {
               Envoyer un message
             </Button>
             <Button variant="shadow">Ajouter en ami</Button>
-            <Button color="danger" variant="shadow">
+            <Button color="danger" variant="shadow" onPress={onOpen}>
               Signaler l&apos;utilisateur
+              <ModalImpossibleNotRealSite isOpen={isOpen} onOpenChange={onOpenChange} />
             </Button>
           </ButtonGroup>
         </div>
