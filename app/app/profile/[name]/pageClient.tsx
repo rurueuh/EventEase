@@ -5,8 +5,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-import PageLoaded from "./pageLoaded";
-import PageSkeleton from "./pageLoading";
+import PageLoaded from "../pageLoaded";
+import PageSkeleton from "../pageLoading";
 
 import User from "@/model/Users";
 import { auth, db } from "@/firebase";
