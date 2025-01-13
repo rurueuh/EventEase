@@ -5,8 +5,8 @@ export const siteConfig = {
   description: "EventEase est une application de gestion d'événements",
   navItems: [
     {
-      label: "Accueil",
-      href: "/app/home",
+      label: "Event",
+      href: "/app/event",
     },
     {
       label: "Profile",
