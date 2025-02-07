@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { DocumentReference, updateDoc } from "firebase/firestore";
-import { Button, Spacer } from "@heroui/react";
+import { Button, Link, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
 
 import PageSkeleton from "./pageLoading";
@@ -100,7 +100,7 @@ export default function PageLoadedNotInEvent({
           <h2>Organisateur</h2>
           <Spacer y={4} />
           <div className="w-full mx-auto flex items-center justify-center">
-            <div key={organizer.uid}>
+            <Link key={organizer.uid} href={`/user/${organizer.uid}`} className="flex flex-col items-center text-white">
               <Image
                 alt={organizer.username}
                 height={150}
@@ -109,7 +109,7 @@ export default function PageLoadedNotInEvent({
               />
               <Spacer y={2} />
               <h2>{organizer.username}</h2>
-            </div>
+            </Link>
           </div>
           <h2>Participants</h2>
           <Spacer y={4} />

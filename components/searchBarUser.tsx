@@ -10,6 +10,7 @@ import { db } from "@/firebase";
 interface User {
   id: string;
   username: string;
+  uid: string;
 }
 
 const UserSearchBar: React.FC = () => {
@@ -45,6 +46,7 @@ const UserSearchBar: React.FC = () => {
 
         results.push({
           id: doc.id,
+          uid: data.uid,
           username: data.username,
         });
       });
@@ -117,7 +119,7 @@ const UserSearchBar: React.FC = () => {
       {!loading && users.length > 0 && (
         <div className="fixed flex flex-col" style={{ marginTop: "1rem" }}>
           {users.map((user) => (
-            <Link key={user.id} href={`/app/profile/${user.username}`}>
+            <Link key={user.id} href={`/app/profile/${user.uid}`}>
               <User
                 avatarProps={{
                   src: "http://localhost:3000/_next/image?url=%2Fprofile.webp&w=384&q=75",

@@ -37,9 +37,8 @@ function initializeUserSession(
 
     querySnapshot.then((snapshot) => {
       snapshot.forEach((doc) => {
-        if (doc.data().username === name) {
+        if (doc.data().uid === name) {
           let user = doc.data() as User;
-
           setUser(user);
         }
       });
