@@ -68,6 +68,12 @@ export default function PageLoaded({
           className="aside basis-5/12 "
           style={{ height: "90vh", padding: "1rem", overflowY: "auto" }}
         >
+          <Link href="/app/event/createEvent">
+            <Button color="primary" variant="shadow">
+              Créer un événement
+            </Button>
+          </Link>
+          <Spacer y={5} />
           {position.lat && position.lng ? (
             <DynamicMap
               handleMarkerClick={handleMarkerClick}
