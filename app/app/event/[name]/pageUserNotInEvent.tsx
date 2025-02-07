@@ -3,6 +3,7 @@ import Image from "next/image";
 import { DocumentReference, updateDoc } from "firebase/firestore";
 import { Button, Link, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import PageSkeleton from "./pageLoading";
 import {Calendar} from "@heroui/calendar";
@@ -28,6 +29,7 @@ export default function PageLoadedNotInEvent({
   participants: User[];
   eventDocs: DocumentReference;
 }>): JSX.Element {
+  const router = useRouter();
   const registerToEvent = () => {
     let userID = _user.uid;
     let isOnEvent = false;
@@ -47,6 +49,7 @@ export default function PageLoadedNotInEvent({
     })
       .then(() => {
         toast.success("Inscription réussie");
+        router.push("/app/event");
       })
       .catch((_error) => {
         toast.error("Erreur lors de l'inscription");
