@@ -20,8 +20,19 @@ import { AiOutlineUser } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { setCookie } from "cookies-next";
 import { toast } from "react-hot-toast";
+import { collection, query, where, getDocs, limit, setDoc, doc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 import { auth } from "@/firebase";
+import User from "@/model/Users";
+import { randomBytes } from "crypto";
+
+interface UserSimple {
+  id: string;
+  username: string;
+  email: string;
+  uid: string;
+}
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -76,11 +87,48 @@ const Login: React.FC = () => {
       const userCred = await signInWithPopup(auth, provider);
       const user = userCred.user;
 
+      // get all users docs from firestore and check if user exists (by email) if not create a new user
+      const usersRef = collection(db, "users");
+      const q = query(
+        usersRef,
+      );
+
+      const querySnapshot = await getDocs(q);
+      const results: UserSimple[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        results.push({
+          id: doc.id,
+          uid: data.uid,
+          email: data.email,
+          username: data.username,
+        });
+
+      });
+
+
+      let userDB = {} as User;
+
+      userDB.username = user.displayName || randomBytes(16).toString("hex");
+      userDB.age = 0;
+      userDB.email = user.email || "error@rurueuh.fr";
+      userDB.createdAt = new Date();
+      userDB.updatedAt = new Date();
+      userDB.uid = user.uid;
+      if (!results.find((u) => u.email === user.email)) {
+        toast.success("inscription en cours !");
+        await setDoc(doc(db, "users", user.uid), {
+          ...userDB,
+        });
+      }
+
       toast.success("Connexion réussie !");
       const idToken = await user.getIdToken(true);
 
       setCookie("token", idToken);
-      router.push("/home");
+      router.push("/app/event");
     } catch (error: any) {
       const messageTranslated = {
         "auth/invalid-email": "Adresse email invalide.",

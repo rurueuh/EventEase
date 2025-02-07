@@ -9,7 +9,6 @@ import ModalImpossibleNotRealSite from "@/components/modalImpossible";
 export default function PageLoaded({ user, isMe = false }: Readonly<{ user: User, isMe: boolean }>) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { isOpen: isOpenMessage, onOpen: onOpenMessage, onOpenChange: onOpenChangeMessage } = useDisclosure();
-
   return (
     <div className="flex">
       <aside className="block basis-2/5">

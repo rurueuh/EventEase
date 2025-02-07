@@ -50,7 +50,7 @@ const Signup: React.FC = () => {
       });
 
       toast.success("Compte créé avec succès !");
-      router.push("/home");
+      router.push("/app/event");
     } catch (error: any) {
       const messageTranslated = {
         "auth/invalid-email": "Adresse email invalide.",
