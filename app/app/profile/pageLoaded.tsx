@@ -6,8 +6,9 @@ import { Button, ButtonGroup, Spacer, Tab, Tabs, useDisclosure } from "@heroui/r
 import User from "@/model/Users";
 import ModalImpossibleNotRealSite from "@/components/modalImpossible";
 
-export default function PageLoaded({ user }: Readonly<{ user: User }>) {
+export default function PageLoaded({ user, isMe = false }: Readonly<{ user: User, isMe: boolean }>) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen: isOpenMessage, onOpen: onOpenMessage, onOpenChange: onOpenChangeMessage } = useDisclosure();
 
   return (
     <div className="flex">
@@ -67,16 +68,26 @@ export default function PageLoaded({ user }: Readonly<{ user: User }>) {
         </div>
         <Spacer y={4} />
         <div>
-          <ButtonGroup>
+          {isMe && (
             <Button color="primary" variant="shadow">
-              Envoyer un message
+              Modifier le profil
             </Button>
-            <Button variant="shadow">Ajouter en ami</Button>
-            <Button color="danger" variant="shadow" onPress={onOpen}>
-              Signaler l&apos;utilisateur
-              <ModalImpossibleNotRealSite isOpen={isOpen} onOpenChange={onOpenChange} />
-            </Button>
-          </ButtonGroup>
+          )}
+          {!isMe && (
+            <ButtonGroup>
+              <Button color="primary" variant="shadow" onPress={onOpenMessage}>
+                Envoyer un message
+                <ModalImpossibleNotRealSite isOpen={isOpenMessage} onOpenChange={onOpenChangeMessage}
+                  customText="cette action n'est pas disponible par manque de modération mais vous pouvez communiquer publiquement sur les events"
+                />
+              </Button>
+              <Button variant="shadow">Ajouter en ami</Button>
+              <Button color="danger" variant="shadow" onPress={onOpen}>
+                Signaler l&apos;utilisateur
+                <ModalImpossibleNotRealSite isOpen={isOpen} onOpenChange={onOpenChange} />
+              </Button>
+            </ButtonGroup>
+          )}
         </div>
         <Spacer y={8} />
         <div>

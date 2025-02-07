@@ -13,35 +13,36 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from
  * @returns JSX.Element
  */
 export default function ModalImpossibleNotRealSite(
-    {
-        isOpen,
-        onOpenChange
-    } : Readonly<{
-        isOpen : boolean,
-        onOpenChange: () => void
-    }>
-) : JSX.Element {
+  {
+    isOpen,
+    onOpenChange,
+    customText
+  }: Readonly<{
+    isOpen: boolean,
+    onOpenChange: () => void
+    customText?: string
+  }>
+): JSX.Element {
 
-    return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalHeader className="flex flex-col gap-1">Action impossible</ModalHeader>
-                      <ModalBody>
-                        <p>
-                          cette action n'est pas possible car le site web n'est pas un vrai site web merci de contacter ruru par
-                          email ou discord: maxjulien666@gmail.com ou rurueuh sur discord
-                        </p>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button color="danger" variant="light" onPress={onClose}>
-                          Close
-                        </Button>
-                      </ModalFooter>
-                    </>
-                  )}
-                </ModalContent>
-              </Modal>
-    )
+  return (
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">Action impossible</ModalHeader>
+            <ModalBody>
+              <p>
+                {customText ? customText : "cette action n'est pas possible car le site web n'est pas un vrai site web merci de contacter ruru par email ou discord: maxjulien666@gmail.com ou rurueuh sur discord"}
+              </p>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="danger" variant="light" onPress={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  )
 }
