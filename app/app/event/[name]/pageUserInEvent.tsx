@@ -133,7 +133,7 @@ export default function PageLoadedInEvent({
       <div className="basis-4/12 self-start">
         <DynamicMap classname="w-full h-[300px]" markers={markers} />
         <Spacer y={3}/>
-        <Chat eventID="eventID" userId={_user.uid} />
+        <Chat eventID={event.eventID} userId={_user.uid} />
       </div>
     </div>
   );

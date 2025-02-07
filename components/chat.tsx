@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { collection, query, onSnapshot, orderBy, getDocs, doc, where, Timestamp, updateDoc, getDoc, Query, DocumentData } from "firebase/firestore";
+import { collection, query, onSnapshot, orderBy, getDocs, doc, where, Timestamp, updateDoc, getDoc, Query, DocumentData, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { randomBytes } from "crypto";
 import { Textarea } from "@heroui/input";
@@ -44,17 +44,22 @@ export const Chat: React.FC<Props> = ({ eventID, userId }: Props) => {
             return;
         if (myMessage.trim() === "") return;
 
-
-        getDoc(doc(db, "chats", eventID)).then((snap) => {
-            let chat = snap.data() as ChatInterface;
-            let newMessage = {} as Message;
-            newMessage.message = myMessage;
-            newMessage.useruid = userId;
-            newMessage.timestamps = Timestamp.now()
-            chat.messages.push(newMessage)
-            updateDoc(doc(db, "chats", eventID), { ...chat })
-            setMyMessage("");
-        })
+        try {
+            getDoc(doc(db, "chats", eventID)).then((snap) => {
+                let chat = snap.data() as ChatInterface || { eventID, messages: [] };
+                
+                let newMessage = {} as Message;
+                newMessage.message = myMessage;
+                newMessage.useruid = userId;
+                newMessage.timestamps = Timestamp.now();
+                
+                chat.messages.push(newMessage);
+                setDoc(doc(db, "chats", eventID), { ...chat });
+                setMyMessage("");
+            });
+        } catch (_e) {
+            // handle error
+        }
     };
 
     if (!messages) {

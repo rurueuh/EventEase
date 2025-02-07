@@ -16,7 +16,6 @@ import User from "@/model/Users";
 import Event from "@/model/Event";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
-let eventNameWithoutSpace = new Map<string, string>();
 
 export default function PageLoaded({
   _user,
@@ -60,14 +59,6 @@ export default function PageLoaded({
     }
   };
 
-
-  events.forEach((ev, i) => {
-    let s = ev.title;
-    s = s.replaceAll(' ', '-');
-    eventNameWithoutSpace.set(ev.title, s);
-    console.log(s);
-  })
-
   return (
     <>
       <h2>Liste des evenements disponibles</h2>
@@ -100,7 +91,7 @@ export default function PageLoaded({
           }}
         >
           <div className="flex flex-wrap">
-            {events.map((event, i) => (
+            {events.map((event) => (
               <Card
                 key={event.title}
                 className="basis-5/12 m-4"
@@ -124,7 +115,7 @@ export default function PageLoaded({
                   <p> {event.attendees.length} participants</p>
                 </CardBody>
                 <CardFooter>
-                  <Link href={"./" + eventNameWithoutSpace.get(event.title)}>
+                  <Link href={"./" + event.eventID}>
                     <Button color="primary" variant="shadow" href={"./ruruTest"}>
                       Participer
                     </Button>
