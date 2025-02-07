@@ -37,7 +37,7 @@ const Login: React.FC = () => {
 
       setCookie("token", idToken);
       toast.success("Connexion réussie !");
-      router.push("/home");
+      router.push("/app/event");
     } catch (error: any) {
       const messageTranslated = {
         "auth/invalid-email": "Adresse email invalide.",
