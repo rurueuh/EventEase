@@ -115,7 +115,7 @@ export default function PageLoaded({
                   <p> {event.attendees.length} participants</p>
                 </CardBody>
                 <CardFooter>
-                  <Link href={"./" + event.eventID}>
+                  <Link href={"/app/event/" + event.eventID}>
                     <Button color="primary" variant="shadow" href={"./ruruTest"}>
                       Participer
                     </Button>

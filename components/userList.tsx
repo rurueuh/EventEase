@@ -1,4 +1,4 @@
-import { Spacer } from "@heroui/react";
+import { Link, Spacer } from "@heroui/react";
 import Image from "next/image";
 
 import User from "@/model/Users";
@@ -13,7 +13,7 @@ export default function UserList({
   return (
     <>
       {users.map((user) => (
-        <div key={user.uid}>
+        <Link key={user.uid} href={"/app/profile/" + user.uid} className="flex flex-col items-center text-white">
           <Image
             alt={user.username}
             height={size}
@@ -22,7 +22,7 @@ export default function UserList({
           />
           <Spacer y={2} />
           <h2>{user.username}</h2>
-        </div>
+        </Link>
       ))}
     </>
   );

@@ -1,7 +1,7 @@
 "use client";
 import { CiLocationOn } from "react-icons/ci";
 import Image from "next/image";
-import { Button, ButtonGroup, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
+import { Button, ButtonGroup, Link, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
 
 import User from "@/model/Users";
 import ModalImpossibleNotRealSite from "@/components/modalImpossible";
@@ -69,9 +69,11 @@ export default function PageLoaded({ user, isMe = false }: Readonly<{ user: User
         <Spacer y={4} />
         <div>
           {isMe && (
-            <Button color="primary" variant="shadow">
-              Modifier le profil
-            </Button>
+            <Link href="/app/setting">
+              <Button color="primary" variant="shadow">
+                Modifier le profil
+              </Button>
+            </Link>
           )}
           {!isMe && (
             <ButtonGroup>
