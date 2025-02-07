@@ -5,6 +5,8 @@ import { Button, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
 
 import PageSkeleton from "./pageLoading";
+import {Calendar} from "@heroui/calendar";
+import { parseDate } from "@internationalized/date";
 
 import UserList from "@/components/userList";
 import User from "@/model/Users";
@@ -131,13 +133,9 @@ export default function PageLoadedNotInEvent({
       </div>
       <div className="basis-4/12 self-start">
         <DynamicMap classname="w-full h-[300px]" markers={markers} />
+        <Spacer y={4} />
         <div>
-          <h2>DATE TYPE CALENDRIER</h2>
-          <ul>
-            <li>DATE TYPE CALENDRIER 1</li>
-            <li>DATE TYPE CALENDRIER 2</li>
-            <li>DATE TYPE CALENDRIER 3</li>
-          </ul>
+          <Calendar isReadOnly aria-label="Date (Read Only)" value={parseDate("2024-04-24")} />
         </div>
       </div>
     </div>

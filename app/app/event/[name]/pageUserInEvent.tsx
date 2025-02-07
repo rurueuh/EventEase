@@ -5,6 +5,8 @@ import { Button, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
 
 import PageSkeleton from "./pageLoading";
+import {Calendar} from "@heroui/calendar";
+import { parseDate } from "@internationalized/date";
 
 import UserList from "@/components/userList";
 import User from "@/model/Users";
@@ -27,7 +29,7 @@ export default function PageLoadedInEvent({
   participants: User[];
   eventDocs: DocumentReference;
 }>): JSX.Element {
-  const registerToEvent = () => {
+  const unregisterToEvent = () => {
     let userID = _user.uid;
     let isOnEvent = false;
 
@@ -36,16 +38,17 @@ export default function PageLoadedInEvent({
         isOnEvent = true;
       }
     });
-    if (isOnEvent) {
-      toast.error("Vous êtes déjà inscrit a l'evenement.");
+    if (!isOnEvent) {
+      toast.error("Vous n'êtes pas inscrit a l'evenement.");
 
       return;
     }
+    event.attendees = event.attendees.filter((p) => p.id !== userID);
     updateDoc(eventDocs, {
-      attendees: [...event.attendees, userDocs],
+      attendees: [...event.attendees],
     })
       .then(() => {
-        toast.success("Inscription réussie");
+        toast.success("Déinscription réussie");
       })
       .catch((_error) => {
         toast.error("Erreur lors de l'inscription");
@@ -89,7 +92,7 @@ export default function PageLoadedInEvent({
             <Spacer y={1} />
             <p>à {event.location}</p>
             <Spacer y={2} />
-            <Button color="primary" variant="shadow" onPress={registerToEvent}>
+            <Button color="primary" variant="shadow" onPress={unregisterToEvent}>
               Se désinscrire
             </Button>
           </div>
@@ -132,6 +135,8 @@ export default function PageLoadedInEvent({
       </div>
       <div className="basis-4/12 self-start">
         <DynamicMap classname="w-full h-[300px]" markers={markers} />
+        <Spacer y={3}/>
+        <Calendar isReadOnly aria-label="Date (Read Only)" value={parseDate(event.date)} />
         <Spacer y={3}/>
         <Chat eventID={event.eventID} userId={_user.uid} />
       </div>
