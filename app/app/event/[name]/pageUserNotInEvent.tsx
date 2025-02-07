@@ -4,10 +4,10 @@ import { DocumentReference, updateDoc } from "firebase/firestore";
 import { Button, Link, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Calendar } from "@heroui/calendar";
+import { parseDate } from "@internationalized/date";
 
 import PageSkeleton from "./pageLoading";
-import {Calendar} from "@heroui/calendar";
-import { parseDate } from "@internationalized/date";
 
 import UserList from "@/components/userList";
 import User from "@/model/Users";
@@ -103,7 +103,11 @@ export default function PageLoadedNotInEvent({
           <h2>Organisateur</h2>
           <Spacer y={4} />
           <div className="w-full mx-auto flex items-center justify-center">
-            <Link key={organizer.uid} href={`/user/${organizer.uid}`} className="flex flex-col items-center text-white">
+            <Link
+              key={organizer.uid}
+              className="flex flex-col items-center text-white"
+              href={`/user/${organizer.uid}`}
+            >
               <Image
                 alt={organizer.username}
                 height={150}
@@ -138,7 +142,11 @@ export default function PageLoadedNotInEvent({
         <DynamicMap classname="w-full h-[300px]" markers={markers} />
         <Spacer y={4} />
         <div>
-          <Calendar isReadOnly aria-label="Date (Read Only)" value={parseDate("2024-04-24")} />
+          <Calendar
+            isReadOnly
+            aria-label="Date (Read Only)"
+            value={parseDate("2024-04-24")}
+          />
         </div>
       </div>
     </div>

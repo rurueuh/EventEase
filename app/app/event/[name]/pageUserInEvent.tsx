@@ -4,10 +4,10 @@ import { DocumentReference, updateDoc } from "firebase/firestore";
 import { Button, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Calendar } from "@heroui/calendar";
+import { parseDate } from "@internationalized/date";
 
 import PageSkeleton from "./pageLoading";
-import {Calendar} from "@heroui/calendar";
-import { parseDate } from "@internationalized/date";
 
 import UserList from "@/components/userList";
 import User from "@/model/Users";
@@ -95,7 +95,11 @@ export default function PageLoadedInEvent({
             <Spacer y={1} />
             <p>à {event.location}</p>
             <Spacer y={2} />
-            <Button color="primary" variant="shadow" onPress={unregisterToEvent}>
+            <Button
+              color="primary"
+              variant="shadow"
+              onPress={unregisterToEvent}
+            >
               Se désinscrire
             </Button>
           </div>
@@ -138,9 +142,13 @@ export default function PageLoadedInEvent({
       </div>
       <div className="basis-4/12 self-start">
         <DynamicMap classname="w-full h-[300px]" markers={markers} />
-        <Spacer y={3}/>
-        <Calendar isReadOnly aria-label="Date (Read Only)" value={parseDate(event.date)} />
-        <Spacer y={3}/>
+        <Spacer y={3} />
+        <Calendar
+          isReadOnly
+          aria-label="Date (Read Only)"
+          value={parseDate(event.date)}
+        />
+        <Spacer y={3} />
         <Chat eventID={event.eventID} userId={_user.uid} />
       </div>
     </div>

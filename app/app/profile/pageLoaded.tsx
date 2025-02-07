@@ -1,14 +1,30 @@
 "use client";
 import { CiLocationOn } from "react-icons/ci";
 import Image from "next/image";
-import { Button, ButtonGroup, Link, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
+import {
+  Button,
+  ButtonGroup,
+  Link,
+  Spacer,
+  Tab,
+  Tabs,
+  useDisclosure,
+} from "@heroui/react";
 
 import User from "@/model/Users";
 import ModalImpossibleNotRealSite from "@/components/modalImpossible";
 
-export default function PageLoaded({ user, isMe = false }: Readonly<{ user: User, isMe: boolean }>) {
+export default function PageLoaded({
+  user,
+  isMe = false,
+}: Readonly<{ user: User; isMe: boolean }>) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { isOpen: isOpenMessage, onOpen: onOpenMessage, onOpenChange: onOpenChangeMessage } = useDisclosure();
+  const {
+    isOpen: isOpenMessage,
+    onOpen: onOpenMessage,
+    onOpenChange: onOpenChangeMessage,
+  } = useDisclosure();
+
   return (
     <div className="flex">
       <aside className="block basis-2/5">
@@ -78,14 +94,19 @@ export default function PageLoaded({ user, isMe = false }: Readonly<{ user: User
             <ButtonGroup>
               <Button color="primary" variant="shadow" onPress={onOpenMessage}>
                 Envoyer un message
-                <ModalImpossibleNotRealSite isOpen={isOpenMessage} onOpenChange={onOpenChangeMessage}
+                <ModalImpossibleNotRealSite
                   customText="cette action n'est pas disponible par manque de modération mais vous pouvez communiquer publiquement sur les events"
+                  isOpen={isOpenMessage}
+                  onOpenChange={onOpenChangeMessage}
                 />
               </Button>
               <Button variant="shadow">Ajouter en ami</Button>
               <Button color="danger" variant="shadow" onPress={onOpen}>
                 Signaler l&apos;utilisateur
-                <ModalImpossibleNotRealSite isOpen={isOpen} onOpenChange={onOpenChange} />
+                <ModalImpossibleNotRealSite
+                  isOpen={isOpen}
+                  onOpenChange={onOpenChange}
+                />
               </Button>
             </ButtonGroup>
           )}

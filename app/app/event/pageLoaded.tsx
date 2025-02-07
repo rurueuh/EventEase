@@ -122,7 +122,11 @@ export default function PageLoaded({
                 </CardBody>
                 <CardFooter>
                   <Link href={"/app/event/" + event.eventID}>
-                    <Button color="primary" variant="shadow" href={"./ruruTest"}>
+                    <Button
+                      color="primary"
+                      href={"./ruruTest"}
+                      variant="shadow"
+                    >
                       Participer
                     </Button>
                   </Link>

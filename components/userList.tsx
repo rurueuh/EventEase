@@ -13,7 +13,11 @@ export default function UserList({
   return (
     <>
       {users.map((user) => (
-        <Link key={user.uid} href={"/app/profile/" + user.uid} className="flex flex-col items-center text-white">
+        <Link
+          key={user.uid}
+          className="flex flex-col items-center text-white"
+          href={"/app/profile/" + user.uid}
+        >
           <Image
             alt={user.username}
             height={size}

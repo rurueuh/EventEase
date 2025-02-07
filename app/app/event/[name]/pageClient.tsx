@@ -12,7 +12,9 @@ import User from "@/model/Users";
 import { auth, db } from "@/firebase";
 import Event from "@/model/Event";
 
-function EventDetailsPage({ eventID }: Readonly<{ eventID: string }>): JSX.Element {
+function EventDetailsPage({
+  eventID,
+}: Readonly<{ eventID: string }>): JSX.Element {
   const [user, setUser] = useState<User | null>(null);
   const [userDocs, setUserDocs] = useState<DocumentReference | null>(null);
   const [event, setEvent] = useState<Event | null>(null);

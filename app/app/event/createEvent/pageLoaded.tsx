@@ -10,11 +10,11 @@ import {
 } from "firebase/firestore";
 import dynamic from "next/dynamic";
 import L from "leaflet";
+import { v4 as uuidv4 } from "uuid";
 
 import { MarkerType } from "@/components/map";
 import User from "@/model/Users";
 import { db } from "@/firebase";
-import { v4 as uuidv4 } from "uuid";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 
@@ -73,7 +73,7 @@ export default function PageLoaded({
       organizer: _user.username,
       organizerId: _user.uid,
       attendees: [userRef],
-      eventID: eventID
+      eventID: eventID,
     })
       .then(() => {
         toast.success("Événement créé avec succès !");

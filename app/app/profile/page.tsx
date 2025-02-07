@@ -33,9 +33,12 @@ const Home: React.FC = () => {
 
     return () => unsubscribe();
   }, [router]);
-  console.log(user)
 
-  return <div>{user ? <PageLoaded user={user} isMe={true} /> : <PageSkeleton />}</div>;
+  return (
+    <div>
+      {user ? <PageLoaded isMe={true} user={user} /> : <PageSkeleton />}
+    </div>
+  );
 };
 
 export default Home;

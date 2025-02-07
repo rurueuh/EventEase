@@ -1,4 +1,6 @@
 "use client";
+import { randomBytes } from "crypto";
+
 import { useState } from "react";
 import {
   signInWithEmailAndPassword,
@@ -20,12 +22,11 @@ import { AiOutlineUser } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { setCookie } from "cookies-next";
 import { toast } from "react-hot-toast";
-import { collection, query, where, getDocs, limit, setDoc, doc } from "firebase/firestore";
-import { db } from "@/firebase";
+import { collection, query, getDocs, setDoc, doc } from "firebase/firestore";
 
+import { db } from "@/firebase";
 import { auth } from "@/firebase";
 import User from "@/model/Users";
-import { randomBytes } from "crypto";
 
 interface UserSimple {
   id: string;
@@ -89,9 +90,7 @@ const Login: React.FC = () => {
 
       // get all users docs from firestore and check if user exists (by email) if not create a new user
       const usersRef = collection(db, "users");
-      const q = query(
-        usersRef,
-      );
+      const q = query(usersRef);
 
       const querySnapshot = await getDocs(q);
       const results: UserSimple[] = [];
@@ -105,9 +104,7 @@ const Login: React.FC = () => {
           email: data.email,
           username: data.username,
         });
-
       });
-
 
       let userDB = {} as User;
 

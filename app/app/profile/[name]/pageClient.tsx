@@ -19,7 +19,7 @@ function UserProfilePage({ name }: Readonly<{ name: string }>) {
 
   if (!name) return null;
 
-  return <div>{user ? <PageLoaded user={user} /> : <PageSkeleton />}</div>;
+  return <div>{user ? <PageLoaded user={user} isMe={false} /> : <PageSkeleton />}</div>;
 }
 
 export default UserProfilePage;
@@ -39,6 +39,7 @@ function initializeUserSession(
       snapshot.forEach((doc) => {
         if (doc.data().uid === name) {
           let user = doc.data() as User;
+
           setUser(user);
         }
       });
