@@ -1,4 +1,4 @@
-import { Skeleton, Spacer } from "@nextui-org/react";
+import { Skeleton, Spacer } from "@heroui/react";
 
 export default function pageSkeleton() {
   return (

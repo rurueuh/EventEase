@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Input, User } from "@nextui-org/react";
+import { Input, User } from "@heroui/react";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link";

@@ -1,4 +1,4 @@
-import { Spacer } from "@nextui-org/react";
+import { Spacer } from "@heroui/react";
 import Image from "next/image";
 
 import User from "@/model/Users";

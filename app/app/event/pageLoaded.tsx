@@ -7,7 +7,8 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-} from "@nextui-org/react";
+  Link,
+} from "@heroui/react";
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
 
@@ -15,6 +16,7 @@ import User from "@/model/Users";
 import Event from "@/model/Event";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
+let eventNameWithoutSpace = new Map<string, string>();
 
 export default function PageLoaded({
   _user,
@@ -41,7 +43,7 @@ export default function PageLoaded({
     const card = document.getElementById(id);
 
     if (card) {
-      card.style.backgroundColor = "hsl(var(--nextui-primary) / .4)";
+      card.style.backgroundColor = "hsl(var(--heroui-primary) / .4)";
       card.scrollIntoView({ behavior: "smooth" });
       if (lastid) {
         const lastcard = document.getElementById(lastid);
@@ -57,6 +59,14 @@ export default function PageLoaded({
       alert("Card not found");
     }
   };
+
+
+  events.forEach((ev, i) => {
+    let s = ev.title;
+    s = s.replaceAll(' ', '-');
+    eventNameWithoutSpace.set(ev.title, s);
+    console.log(s);
+  })
 
   return (
     <>
@@ -90,7 +100,7 @@ export default function PageLoaded({
           }}
         >
           <div className="flex flex-wrap">
-            {events.map((event) => (
+            {events.map((event, i) => (
               <Card
                 key={event.title}
                 className="basis-5/12 m-4"
@@ -114,9 +124,11 @@ export default function PageLoaded({
                   <p> {event.attendees.length} participants</p>
                 </CardBody>
                 <CardFooter>
-                  <Button color="primary" variant="shadow">
-                    Participer
-                  </Button>
+                  <Link href={"./" + eventNameWithoutSpace.get(event.title)}>
+                    <Button color="primary" variant="shadow" href={"./ruruTest"}>
+                      Participer
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             ))}

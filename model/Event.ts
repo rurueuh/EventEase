@@ -12,4 +12,5 @@ export default interface Event {
   time: string;
   title: string;
   image?: string;
+  eventID: string;
 }

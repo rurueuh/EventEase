@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Card, Skeleton } from "@nextui-org/react";
+import { Card, Skeleton } from "@heroui/react";
 
 const SettingSkeleton: FC = () => {
   const fieldsCount = 10;

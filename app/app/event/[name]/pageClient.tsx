@@ -12,7 +12,7 @@ import User from "@/model/Users";
 import { auth, db } from "@/firebase";
 import Event from "@/model/Event";
 
-function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
+function EventDetailsPage({ eventID: eventID }: Readonly<{ eventID: string }>): JSX.Element {
   const [user, setUser] = useState<User | null>(null);
   const [userDocs, setUserDocs] = useState<DocumentReference | null>(null);
   const [event, setEvent] = useState<Event | null>(null);
@@ -31,7 +31,7 @@ function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
           if (docSnap.exists()) {
             let user = docSnap.data() as User;
 
-            const eventRef = doc(db, "events", name);
+            const eventRef = doc(db, "events", eventID);
 
             setEventDocs(eventRef);
             getDoc(eventRef).then((docSnap) => {
@@ -61,7 +61,7 @@ function EventDetailsPage({ name }: Readonly<{ name: string }>): JSX.Element {
     return () => unsubscribe();
   }, [router]);
 
-  if (!name) return <PageSkeleton />;
+  if (!eventID) return <PageSkeleton />;
 
   if (!user) return <PageSkeleton />;
   if (!event) return <PageSkeleton />;

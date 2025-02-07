@@ -13,7 +13,7 @@ import {
   Spacer,
   Divider,
   ButtonGroup,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineUser } from "react-icons/ai";

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 
 /**
  * @description create a simple modal for say this is not a real website

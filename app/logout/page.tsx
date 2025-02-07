@@ -1,7 +1,7 @@
 "use client";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { Card, Button, Spacer } from "@nextui-org/react";
+import { Card, Button, Spacer } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineLogout } from "react-icons/ai";

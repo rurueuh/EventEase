@@ -5,11 +5,9 @@ export default async function Home({
 }: Readonly<{
   params: Promise<{ name: string }>;
 }>) {
-  let name = (await params).name;
+  let eventID = (await params).name;
 
-  if (!name) return null;
+  if (!eventID) return null;
 
-  name.replaceAll("_", " ");
-
-  return <EventDetailsPage name={name} />;
+  return <EventDetailsPage eventID={eventID} />;
 }

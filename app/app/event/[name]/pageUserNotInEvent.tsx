@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { DocumentReference, updateDoc } from "firebase/firestore";
-import { Button, Spacer } from "@nextui-org/react";
+import { Button, Spacer } from "@heroui/react";
 import toast from "react-hot-toast";
 
 import PageSkeleton from "./pageLoading";

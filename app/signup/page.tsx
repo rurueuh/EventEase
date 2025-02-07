@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { Card, Input, Button, Spacer } from "@nextui-org/react";
+import { Card, Input, Button, Spacer } from "@heroui/react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 

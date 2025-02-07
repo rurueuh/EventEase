@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { collection, query, onSnapshot, orderBy, getDocs, doc, where, Timestamp, updateDoc, getDoc, Query, DocumentData } from "firebase/firestore";
 import { db } from "@/firebase";
 import { randomBytes } from "crypto";
-import { Textarea } from "@nextui-org/input";
-import { Card, CardBody, Chip, Spacer } from "@nextui-org/react";
+import { Textarea } from "@heroui/input";
+import { Card, CardBody, Chip, Spacer } from "@heroui/react";
 import Image from "next/image";
 
 type Props = {

@@ -1,7 +1,7 @@
 "use client";
 import { CiLocationOn } from "react-icons/ci";
 import Image from "next/image";
-import { Button, ButtonGroup, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, ButtonGroup, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
 
 import User from "@/model/Users";
 import ModalImpossibleNotRealSite from "@/components/modalImpossible";

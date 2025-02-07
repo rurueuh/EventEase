@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@heroui/react";
 import { toast } from "react-hot-toast";
 import {
   doc,
@@ -14,6 +14,7 @@ import L from "leaflet";
 import { MarkerType } from "@/components/map";
 import User from "@/model/Users";
 import { db } from "@/firebase";
+import { randomUUID } from "node:crypto";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 
@@ -43,7 +44,8 @@ export default function PageLoaded({
       lng: lng,
     };
 
-    const eventRef = doc(db, "events", formData.title);
+    const eventID = randomUUID();
+    const eventRef = doc(db, "events", eventID);
 
     if (!_user) {
       toast.error("Vous devez être connecté pour créer un événement");
@@ -71,6 +73,7 @@ export default function PageLoaded({
       organizer: _user.username,
       organizerId: _user.uid,
       attendees: [userRef],
+      eventID: eventID
     })
       .then(() => {
         toast.success("Événement créé avec succès !");
