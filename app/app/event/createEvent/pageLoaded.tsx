@@ -14,7 +14,7 @@ import L from "leaflet";
 import { MarkerType } from "@/components/map";
 import User from "@/model/Users";
 import { db } from "@/firebase";
-import { randomUUID } from "node:crypto";
+import { v4 as uuidv4 } from "uuid";
 
 const DynamicMap = dynamic(() => import("@/components/map"), { ssr: false });
 
@@ -44,7 +44,7 @@ export default function PageLoaded({
       lng: lng,
     };
 
-    const eventID = randomUUID();
+    const eventID = uuidv4();
     const eventRef = doc(db, "events", eventID);
 
     if (!_user) {
